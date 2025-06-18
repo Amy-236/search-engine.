@@ -1,0 +1,24 @@
+server:
+  port: 80
+
+spring:
+  application:
+    name: search-engine
+  # 数据库配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://你的数据库地址/search_engine?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: 你的数据库账号
+    password: 你的数据库密码
+
+# MyBatis-Plus配置
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# Gitee API配置
+gitee:
+  base-url: https://gitee.com/api/v5
+  access-token: 你的Gitee秘钥
+  page-size: 100
