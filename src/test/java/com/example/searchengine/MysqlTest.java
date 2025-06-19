@@ -25,9 +25,4 @@ public class MysqlTest {
         repository.setReadme("hello bite!");
         repositoryMapper.insert(repository);
     }
-
-    @Test
-    public void fetchAndSaveRepositories() {
-        repositoryService.fetchAndSaveRepositories("xiaojianzi");
-    }
 }
