@@ -1,6 +1,5 @@
 package com.example.searchengine;
 
-import com.example.searchengine.api.RepositoryService;
 import com.example.searchengine.entity.RepositoryEntity;
 import com.example.searchengine.mapper.RepositoryMapper;
 import org.junit.jupiter.api.Test;
@@ -12,9 +11,6 @@ public class MysqlTest {
 
     @Autowired
     private RepositoryMapper repositoryMapper;
-
-    @Autowired
-    private RepositoryService repositoryService;
 
     @Test
     public void insert() {
