@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>代码仓库搜索</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://unpkg.com/element-plus"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f7fa;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .search-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .page-title {
+            font-size: 36px;
+            font-weight: bold;
+            color: #409EFF;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .search-box {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .results-container {
+            margin-top: 20px;
+        }
+        .result-item {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);
+        }
+        .result-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #409EFF;
+            margin-bottom: 10px;
+        }
+        .result-url {
+            color: #909399;
+            margin-bottom: 10px;
+            word-break: break-all;
+        }
+        .result-content {
+            color: #606266;
+            line-height: 1.6;
+        }
+        .highlight {
+            color: #f56c6c;
+            font-weight: bold;
+        }
+        .pagination {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .total-results {
+            text-align: center;
+            color: #909399;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="container">
+        <div class="search-container">
+            <h1 class="page-title">代码仓库搜索</h1>
+            <div class="search-box">
+                <el-input
+                        v-model="query"
+                        placeholder="请输入搜索关键词"
+                        @keyup.enter="handleSearch"
+                >
+                    <template #append>
+                        <el-button @click="handleSearch">搜索</el-button>
+                    </template>
+                </el-input>
+            </div>
+        </div>
+
+        <div v-if="searched" class="total-results">
+            找到 {{ total }} 个结果
+        </div>
+
+        <div v-if="loading" class="results-container">
+            <el-skeleton :rows="3" animated />
+        </div>
+
+        <div v-else-if="results.length > 0" class="results-container">
+            <div v-for="item in results" :key="item.id" class="result-item">
+                <div class="result-title">
+                    <a :href="item.htmlUrl" target="_blank">{{ item.fullName }}</a>
+                </div>
+                <div class="result-url">{{ item.htmlUrl }}</div>
+                <div class="result-content" v-html="highlightText(item.readme)"></div>
+            </div>
+
+            <div class="pagination">
+                <el-pagination
+                        v-model:current-page="currentPage"
+                        v-model:page-size="pageSize"
+                        :page-sizes="[10, 20, 50, 100]"
+                        :total="total"
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        layout="total, sizes, prev, pager, next"
+                />
+            </div>
+        </div>
+
+        <div v-else-if="searched" class="results-container">
+            <el-empty description="没有找到相关结果" />
+        </div>
+    </div>
+</div>
+<script src="main.js"></script>
+</body>
+</html>
+
